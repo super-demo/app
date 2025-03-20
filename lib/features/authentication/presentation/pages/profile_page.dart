@@ -38,8 +38,8 @@ class ProfilePage extends StatelessWidget {
                           colors: [
                             Color(
                                 0xFF29DAFC), // Start with the bright cyan-blue
-                            Color.fromARGB(
-                                255, 177, 241, 252), // End with the darker blue
+                            Color.fromRGBO(
+                                177, 241, 252, 1), // End with the darker blue
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,

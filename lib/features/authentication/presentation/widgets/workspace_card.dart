@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:app/core/constants/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -50,7 +51,7 @@ class WorkspaceCard extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Color(0xFF59DFFD), // Light cyan-blue
+                    AppColors.kColorPrimary, // Light cyan-blue
                     Color.fromARGB(255, 99, 205, 247),
                   ],
                 ),

@@ -1,10 +1,9 @@
 import 'package:app/features/authentication/presentation/bloc/auth_bloc.dart';
-import 'package:app/features/authentication/presentation/bloc/auth_event.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_state.dart';
 import 'package:app/features/authentication/presentation/pages/home_page.dart';
 import 'package:app/features/authentication/presentation/pages/login_screen.dart';
 import 'package:app/features/authentication/presentation/pages/profile_page.dart';
-import 'package:app/features/authentication/presentation/widgets/home_contents.dart';
+import 'package:app/features/authentication/presentation/pages/services_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,8 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // List of pages to navigate between
   static const List<Widget> _pages = <Widget>[
     HomePage(),
-    // CarouselExampleApp(),
-    Center(child: Text('Services Page')),
+    ServicesPage(),
     ProfilePage(),
   ];
 
@@ -99,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: Colors.white,
             type: BottomNavigationBarType.fixed,
             onTap: _onItemTapped,
+            
           ),
         );
       },
