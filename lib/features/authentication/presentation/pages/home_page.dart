@@ -1,3 +1,4 @@
+import 'package:app/features/authentication/presentation/pages/notification_page.dart';
 import 'package:app/features/authentication/presentation/widgets/home_contents.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -24,7 +25,30 @@ class HomePage extends StatelessWidget {
                 color: Colors.grey[700],
               ),
               onPressed: () {
-                // context.read<AuthBloc>().add(SignOutEvent());
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return const NotificationPage();
+                    },
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      const begin = Offset(0.0, 1.0); // Start from the bottom
+                      const end = Offset.zero; // End at the top
+                      const curve = Curves.easeInOut;
+
+                      final tween = Tween(begin: begin, end: end)
+                          .chain(CurveTween(curve: curve));
+                      final offsetAnimation = animation.drive(tween);
+
+                      return SlideTransition(
+                        position: offsetAnimation,
+                        child: child,
+                      );
+                    },
+                    transitionDuration: const Duration(milliseconds: 300),
+                  ),
+                );
               },
             ),
           ],
