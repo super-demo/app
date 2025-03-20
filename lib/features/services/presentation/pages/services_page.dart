@@ -1,4 +1,4 @@
-import 'package:app/features/authentication/presentation/widgets/services_contents.dart';
+import 'package:app/features/services/presentation/widgets/services_contents.dart';
 import 'package:flutter/material.dart';
 
 class ServicesPage extends StatelessWidget {

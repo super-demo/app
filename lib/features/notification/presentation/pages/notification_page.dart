@@ -1,4 +1,4 @@
-import 'package:app/features/authentication/presentation/widgets/notification_contents.dart';
+import 'package:app/features/notification/presentation/widgets/notification_contents.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -26,7 +26,7 @@ class NotificationPage extends StatelessWidget {
                     color: Colors.black54,
                   ))
             ]),
-        body: NotificationContents(),
+        body: const NotificationContents(),
       ),
     );
   }

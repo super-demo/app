@@ -1,9 +1,7 @@
-import 'dart:ui';
-
 import 'package:app/core/enums/banner_info.dart';
-import 'package:app/features/authentication/presentation/widgets/banner.dart';
-import 'package:app/features/authentication/presentation/widgets/miniapp_card.dart';
-import 'package:app/features/authentication/presentation/widgets/workspace_card.dart';
+import 'package:app/features/home/presentation/widgets/banner.dart';
+import 'package:app/features/services/presentation/widgets/miniapp_card.dart';
+import 'package:app/features/services/presentation/widgets/workspace_card.dart';
 import 'package:flutter/material.dart';
 
 class HomeContents extends StatefulWidget {

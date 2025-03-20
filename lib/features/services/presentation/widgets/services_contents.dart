@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 import 'package:app/core/constants/app_color.dart';
-import 'package:app/features/authentication/presentation/pages/workspace_page.dart';
-import 'package:app/features/authentication/presentation/widgets/miniapp_card.dart';
-import 'package:app/features/authentication/presentation/widgets/workspace_card.dart';
+import 'package:app/features/services/presentation/widgets/miniapp_card.dart';
+import 'package:app/features/services/presentation/widgets/workspace_card.dart';
+import 'package:app/features/workspace/presentation/pages/workspace_page.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 

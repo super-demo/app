@@ -1,5 +1,5 @@
 import 'package:app/features/authentication/presentation/pages/notification_page.dart';
-import 'package:app/features/authentication/presentation/widgets/home_contents.dart';
+import 'package:app/features/home/presentation/widgets/home_contents.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
           backgroundColor: Colors.white,
           title: const Text(
             'Kasetsart University',
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(fontSize: 20),
           ),
           actions: [
             IconButton(

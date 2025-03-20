@@ -13,7 +13,6 @@ void main() {
   runApp(const MyApp());
 }
 
-// TODO: Implement this (mock)
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

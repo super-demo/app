@@ -19,7 +19,7 @@ class LoginScreen extends StatelessWidget {
           listener: (context, state) {
             if (state.status == AuthStatus.authenticated) {
               Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => HomeScreen()),
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
               );
             } else if (state.status == AuthStatus.error) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -71,8 +71,8 @@ class LoginScreen extends StatelessWidget {
                           context.read<AuthBloc>().add(SignInWithGoogleEvent());
                         },
                         icon: SizedBox(
-                          width: 28,
-                          height: 28,
+                          width: 32,
+                          height: 32,
                           child: Image.network(
                             'http://pngimg.com/uploads/google/google_PNG19635.png',
                             fit: BoxFit.cover,

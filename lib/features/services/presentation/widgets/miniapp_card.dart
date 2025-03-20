@@ -1,3 +1,4 @@
+import 'package:app/features/mini_app/presentation/pages/mini_app_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -41,7 +42,7 @@ class _MiniAppCardState extends State<MiniAppCard> {
     final result = await showMenu<String>(
         context: context,
         position: positionRect,
-        menuPadding: EdgeInsets.symmetric(vertical: 0),
+        menuPadding: const EdgeInsets.symmetric(vertical: 0),
         items: [
           PopupMenuItem<String>(
               value: 'pin',
@@ -98,6 +99,16 @@ class _MiniAppCardState extends State<MiniAppCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            fullscreenDialog:
+                true, // Makes it appear as a separate modal-like page
+            builder: (context) => const MiniAppPage(),
+          ),
+        );
+      },
       onTapDown: (_) {
         setState(() {
           _scale = 0.95;
@@ -166,3 +177,10 @@ class _MiniAppCardState extends State<MiniAppCard> {
     );
   }
 }
+
+//  onTap: () {
+//         Navigator.push(
+//             context,
+//             MaterialPageRoute(
+//                 builder: (BuildContext context) => const WebViewApp()));
+//       },

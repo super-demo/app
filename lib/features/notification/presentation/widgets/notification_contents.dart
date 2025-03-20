@@ -1,9 +1,5 @@
 import 'package:app/core/constants/app_color.dart';
-import 'package:app/features/authentication/presentation/widgets/notification_card.dart';
-import 'package:buttons_tabbar/buttons_tabbar.dart';
-import 'package:flutter/material.dart';
-
-import 'package:app/core/constants/app_color.dart';
+import 'package:app/features/notification/presentation/widgets/notification_card.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 

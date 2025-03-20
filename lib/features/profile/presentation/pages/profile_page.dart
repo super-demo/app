@@ -92,7 +92,7 @@ class ProfilePage extends StatelessWidget {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                '${userProfile.name?.split(' ').first ?? 'User'} M.',
+                                '${userProfile.name.split(' ').first} ${userProfile.name.split(' ').last[0]}. ',
                                 style: const TextStyle(
                                   fontSize: 24,
                                   color: Colors.white,
@@ -125,16 +125,14 @@ class ProfilePage extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       _buildInfoRow(
-                        icon: 'assets/svg/call.svg',
-                        label: 'Name',
-                        value: userProfile.name ?? 'N/A',
-                      ),
+                          icon: 'assets/svg/call.svg',
+                          label: 'Name',
+                          value: userProfile.name),
                       const SizedBox(height: 16),
                       _buildInfoRow(
-                        icon: 'assets/svg/message35.svg',
-                        label: 'Email',
-                        value: userProfile.email ?? 'N/A',
-                      ),
+                          icon: 'assets/svg/message35.svg',
+                          label: 'Email',
+                          value: userProfile.email),
                       const SizedBox(height: 16),
                       _buildInfoRow(
                         icon: 'assets/svg/building.svg',
