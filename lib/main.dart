@@ -6,6 +6,8 @@ import 'package:app/features/authentication/data/repositories/auth_repository_im
 import 'package:app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_event.dart';
 import 'package:app/features/authentication/presentation/pages/login_screen.dart';
+import 'package:app/features/home/data/repositories/announcement_repository_impl.dart';
+import 'package:app/features/home/presentation/bloc/home_bloc.dart';
 import 'package:app/features/notification/data/repositories/noti_repository_impl.dart';
 import 'package:app/features/notification/presentation/bloc/noti_bloc.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +53,11 @@ class MyApp extends StatelessWidget {
             apiService: apiService, // Use the instance directly
           ),
         ),
+        RepositoryProvider<AnnouncementRepository>(
+          create: (context) => AnnouncementRepositoryImpl(
+            apiService: apiService,
+          ),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -62,6 +69,11 @@ class MyApp extends StatelessWidget {
           BlocProvider<NotificationBloc>(
             create: (context) => NotificationBloc(
               repository: context.read<NotificationRepository>(),
+            ),
+          ),
+          BlocProvider<AnnouncementBloc>(
+            create: (context) => AnnouncementBloc(
+              repository: context.read<AnnouncementRepository>(),
             ),
           ),
         ],

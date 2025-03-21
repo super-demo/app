@@ -1,7 +1,7 @@
 import 'package:app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:app/features/authentication/presentation/bloc/auth_state.dart';
-import 'package:app/features/home/presentation/pages/home_page.dart';
 import 'package:app/features/authentication/presentation/pages/login_screen.dart';
+import 'package:app/features/home/presentation/pages/home_page.dart';
 import 'package:app/features/profile/presentation/pages/profile_page.dart';
 import 'package:app/features/services/presentation/pages/services_page.dart';
 import 'package:flutter/material.dart';
