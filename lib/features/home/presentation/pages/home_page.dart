@@ -1,5 +1,5 @@
-import 'package:app/features/authentication/presentation/pages/notification_page.dart';
 import 'package:app/features/home/presentation/widgets/home_contents.dart';
+import 'package:app/features/notification/presentation/pages/notification_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
