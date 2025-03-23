@@ -116,28 +116,18 @@ class _HomeContentsState extends State<HomeContents> {
             ),
           ),
         ),
-        const SizedBox(height: 20),
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxHeight: height / 2),
-          child: GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 8,
-            ),
-            itemCount: 8,
-            itemBuilder: (context, index) {
-              return MiniAppCard(
-                index: index,
-                title: "name",
-                imageUrl: 'https://github.com/thyms-c.png',
-                linkUrl: "https://www.google.com",
-              );
-            },
+        const SizedBox(height: 10),
+        Center(
+          child: Lottie.asset(
+            'assets/lottie/empty.json',
+            width: 100,
+            height: 100,
           ),
         ),
+        const SizedBox(height: 10),
+        const Center(
+            child: Text('No pinned services',
+                style: TextStyle(color: Colors.black54))),
         const SizedBox(height: 14),
         const Padding(
           padding: EdgeInsetsDirectional.only(top: 8.0, start: 16.0),
