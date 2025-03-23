@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class MiniAppPage extends StatefulWidget {
   final String linkUrl;
-  const MiniAppPage({super.key, required this.linkUrl});
+  final String title;
+  const MiniAppPage({super.key, required this.linkUrl, required this.title});
   @override
   State<MiniAppPage> createState() => _MiniAppPageState();
 }
@@ -16,7 +16,6 @@ class _MiniAppPageState extends State<MiniAppPage> {
   @override
   void initState() {
     super.initState();
-
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setUserAgent(
@@ -39,7 +38,6 @@ class _MiniAppPageState extends State<MiniAppPage> {
                 request.url.contains('signin')) {
               return NavigationDecision.navigate;
             }
-
             return NavigationDecision.navigate;
           },
           onWebResourceError: (WebResourceError error) {},
@@ -53,46 +51,91 @@ class _MiniAppPageState extends State<MiniAppPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text(
-          'Flutter WebView',
-          style: TextStyle(fontSize: 20),
-        ),
-        actions: [
-          IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: SvgPicture.asset(
-                "assets/svg/x.svg",
-                color: Colors.black87,
-              )),
-          // Add navigation buttons for better UX
-          IconButton(
-            onPressed: () async {
-              if (await controller.canGoBack()) {
-                await controller.goBack();
-              }
-            },
-            icon: const Icon(Icons.arrow_back),
-          ),
-          IconButton(
-            onPressed: () async {
-              await controller.reload();
-            },
-            icon: const Icon(Icons.refresh),
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          WebViewWidget(
-            controller: controller,
-          ),
-          if (isLoading)
-            const Center(
-              child: CircularProgressIndicator(),
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Header exactly matching the screenshot
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                children: [
+                  // Back button (left aligned)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      onPressed: () async {
+                        if (await controller.canGoBack()) {
+                          await controller.goBack();
+                        } else {
+                          if (context.mounted) {
+                            Navigator.pop(context);
+                          }
+                        }
+                      },
+                      icon: const Icon(Icons.arrow_back, size: 24),
+                    ),
+                  ),
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    onPressed: () async {
+                      await controller.reload();
+                    },
+                    icon: const Icon(Icons.refresh, size: 22),
+                  ),
+
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          widget.title,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(width: 46),
+
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.close, size: 24),
+                    ),
+                  ),
+                ],
+              ),
             ),
-        ],
+
+            // Thin divider line
+            const Divider(height: 1, thickness: 0.5),
+
+            // WebView takes remaining space
+            Expanded(
+              child: Stack(
+                children: [
+                  WebViewWidget(
+                    controller: controller,
+                  ),
+                  if (isLoading)
+                    const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

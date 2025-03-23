@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class MiniAppCard extends StatefulWidget {
-  const MiniAppCard(
-      {super.key,
-      required this.index,
-      required this.title,
-      required this.imageUrl,
-      required this.linkUrl});
+  const MiniAppCard({
+    super.key,
+    required this.index,
+    required this.title,
+    required this.imageUrl,
+    required this.linkUrl,
+  });
 
   final int index;
   final String title;
@@ -106,7 +107,8 @@ class _MiniAppCardState extends State<MiniAppCard> {
           MaterialPageRoute(
             fullscreenDialog:
                 true, // Makes it appear as a separate modal-like page
-            builder: (context) => MiniAppPage(linkUrl: widget.linkUrl),
+            builder: (context) =>
+                MiniAppPage(linkUrl: widget.linkUrl, title: widget.title),
           ),
         );
       },
@@ -178,10 +180,3 @@ class _MiniAppCardState extends State<MiniAppCard> {
     );
   }
 }
-
-//  onTap: () {
-//         Navigator.push(
-//             context,
-//             MaterialPageRoute(
-//                 builder: (BuildContext context) => const WebViewApp()));
-//       },
