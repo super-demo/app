@@ -1,21 +1,37 @@
-import 'dart:ui';
-
 import 'package:app/core/constants/app_color.dart';
-import 'package:app/features/services/presentation/widgets/miniapp_card.dart';
+import 'package:app/features/services/data/models/mini_app_model.dart';
+import 'package:app/features/services/presentation/bloc/mini_app_bloc.dart';
+import 'package:app/features/services/presentation/bloc/mini_app_event.dart';
+import 'package:app/features/services/presentation/bloc/mini_app_state.dart';
+import 'package:app/features/services/presentation/widgets/mini_app_card.dart';
 import 'package:app/features/services/presentation/widgets/workspace_card.dart';
-import 'package:app/features/workspace/presentation/pages/workspace_page.dart';
+import 'package:app/features/workspace/data/models/workspace_model.dart';
+import 'package:app/features/workspace/presentation/bloc/workspace_bloc.dart';
+import 'package:app/features/workspace/presentation/bloc/workspace_event.dart';
+import 'package:app/features/workspace/presentation/bloc/workspace_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ServicesContents extends StatefulWidget {
   const ServicesContents({super.key});
 
   @override
-  State<ServicesContents> createState() => _ServicesContentsState();
+  _ServicesContentsState createState() => _ServicesContentsState();
 }
 
 class _ServicesContentsState extends State<ServicesContents> {
   final CarouselController controller = CarouselController(initialItem: 1);
+
+  @override
+  void initState() {
+    super.initState();
+    int siteId = 1;
+    context.read<MiniAppBloc>().add(FetchSiteMiniAppList(siteId: siteId));
+    context
+        .read<WorkspaceBloc>()
+        .add(FetchUserWorkspaces(parentSiteId: siteId));
+  }
 
   @override
   void dispose() {
@@ -24,102 +40,19 @@ class _ServicesContentsState extends State<ServicesContents> {
   }
 
   final PageController _pageController = PageController();
-  final int itemsPerPage = 8; // 4x2 Grid per page
-  final int totalItems = 16; // Example: More than 8 items for scrolling
 
   @override
   Widget build(BuildContext context) {
-    const double height = 420;
-
-    final List<Map<String, String>> workspaces = [
-      {
-        'image':
-            'https://github.com/chayakorn2002.png', // Replace with your image URL
-        'label': 'HAPPENING NOW',
-        'title': 'Kasetsart Sriracha',
-        'subtitle': 'เกษตรศาสตร์ ศรีราชา',
-        'backgroundColor': '0xFF59DFFD', // Red color
-      },
-      {
-        'image':
-            'https://github.com/chayakorn2002.png', // Replace with your image URL
-        'label': 'HAPPENING NOW',
-        'title': 'Asphalt Legends Unite meets',
-        'subtitle': 'LEGO',
-        'backgroundColor': '0xFF59DFFD', // Blue color
-      },
-      {
-        'image':
-            'https://github.com/chayakorn2002.png', // Replace with your image URL
-        'label': 'HAPPENING NOW',
-        'title': 'Summer Race in',
-        'subtitle': 'Asphalt 9',
-        'backgroundColor': '0xFF59DFFD', // Yellow color
-      },
-      // Additional workspaces (not displayed directly)
-      {
-        'image': 'https://github.com/chayakorn2002.png',
-        'label': 'HAPPENING NOW',
-        'title': 'Winter Challenge in',
-        'subtitle': 'Subway Surfers',
-        'backgroundColor': '0xFF59DFFD',
-      },
-    ];
-
     // double height = MediaQuery.of(context).size.height;
-
-    // Calculate total pages required
-    int totalPages = (totalItems / itemsPerPage).ceil();
 
     return ListView(
       children: <Widget>[
-        const SizedBox(height: 20),
-        Column(
-          children: [
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: height / 2),
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: totalPages,
-                itemBuilder: (context, pageIndex) {
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4, // 4 columns
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                    ),
-                    itemCount: itemsPerPage,
-                    itemBuilder: (context, index) {
-                      int globalIndex = pageIndex * itemsPerPage + index;
-                      if (globalIndex >= totalItems) {
-                        return const SizedBox(); // Prevent overflow
-                      }
-
-                      return MiniAppCard(
-                        index: globalIndex,
-                        title: "Item $globalIndex",
-                        imageUrl: 'https://github.com/thyms-c.png',
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 12),
-            SmoothPageIndicator(
-              controller: _pageController,
-              count: totalPages,
-              effect: const WormEffect(
-                dotHeight: 8,
-                dotWidth: 8,
-                activeDotColor: AppColors.kColorPrimary,
-              ),
-            ),
-          ],
-        ),
+        const SizedBox(height: 8),
+        BlocBuilder<MiniAppBloc, MiniAppState>(builder: (context, state) {
+          return (state is MiniAppLoaded)
+              ? _buildMiniAppCard(state, state.siteMiniAppList)
+              : const Center(child: CircularProgressIndicator());
+        }),
         const SizedBox(height: 14),
         const Padding(
           padding: EdgeInsetsDirectional.only(top: 8.0, start: 16.0),
@@ -134,43 +67,95 @@ class _ServicesContentsState extends State<ServicesContents> {
         const SizedBox(height: 4),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: GridView.builder(
-            shrinkWrap:
-                true, // Ensures the GridView takes only the space it needs
-            physics: const NeverScrollableScrollPhysics(), // Disable scrolling
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 8.0,
-              mainAxisSpacing: 8.0,
-              childAspectRatio: 0.72,
-            ),
-            itemCount: 4,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const WorkspacePage(
-                            // workspace: workspaces[
-                            //     index], // Pass the selected workspace data
-                            ),
-                      ),
-                    );
-                  },
-                  child: WorkspaceCard(
-                    imageUrl: workspaces[index]['image']!,
-                    label: workspaces[index]['label']!,
-                    title: workspaces[index]['title']!,
-                    subtitle: workspaces[index]['subtitle']!,
-                    backgroundColor:
-                        Color(int.parse(workspaces[index]['backgroundColor']!)),
-                  ));
+          child: BlocBuilder<WorkspaceBloc, WorkspaceState>(
+            builder: (context, state) {
+              return (state is WorkspaceLoaded)
+                  ? _buildWorkspaceCard(state, state.userWorkspaces)
+                  : const Center(child: CircularProgressIndicator());
             },
           ),
         ),
         const SizedBox(height: 28),
       ],
+    );
+  }
+
+  Widget _buildMiniAppCard(MiniAppState state, List<MiniAppModel> miniApps) {
+    double height;
+    miniApps.length > 8 ? height = 420 : height = 200;
+    const int itemsPerPage = 8;
+    int totalPages = (miniApps.length / itemsPerPage).ceil();
+
+    return Column(
+      children: [
+        ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: height / 2),
+          child: PageView.builder(
+            controller: _pageController,
+            itemCount: totalPages,
+            itemBuilder: (context, pageIndex) {
+              return GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4, // 4 columns
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                ),
+                itemCount: itemsPerPage,
+                itemBuilder: (context, index) {
+                  int globalIndex = pageIndex * itemsPerPage + index;
+                  if (globalIndex >= miniApps.length) {
+                    return const SizedBox(); // Prevent overflow
+                  }
+
+                  return MiniAppCard(
+                    index: miniApps[globalIndex].siteMiniAppId,
+                    title: miniApps[globalIndex].slug,
+                    imageUrl: miniApps[globalIndex].imageUrl,
+                    linkUrl: miniApps[globalIndex].linkUrl,
+                  );
+                },
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 12),
+        SmoothPageIndicator(
+          controller: _pageController,
+          count: totalPages,
+          effect: const WormEffect(
+            dotHeight: 8,
+            dotWidth: 8,
+            activeDotColor: AppColors.kColorPrimary,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildWorkspaceCard(
+      WorkspaceState state, List<WorkspaceModel> workspaces) {
+    return GridView.builder(
+      shrinkWrap: true, // Ensures the GridView takes only the space it needs
+      physics: const NeverScrollableScrollPhysics(), // Disable scrolling
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 8.0,
+        mainAxisSpacing: 8.0,
+        childAspectRatio: 0.8,
+      ),
+      itemCount: workspaces.length,
+      itemBuilder: (context, index) {
+        return WorkspaceCard(
+          imageUrl: workspaces[index].imageUrl,
+          title: workspaces[index].name,
+          subtitle: workspaces[index].shortDescription,
+          parentSiteId: workspaces[index].siteParentId,
+          workspaceId: workspaces[index].siteId,
+          workspaceName: workspaces[index].name,
+        );
+      },
     );
   }
 }

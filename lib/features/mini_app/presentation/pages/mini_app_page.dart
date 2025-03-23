@@ -3,7 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class MiniAppPage extends StatefulWidget {
-  const MiniAppPage({super.key});
+  final String linkUrl;
+  const MiniAppPage({super.key, required this.linkUrl});
 
   @override
   State<MiniAppPage> createState() => _MiniAppPageState();
@@ -15,9 +16,10 @@ class _MiniAppPageState extends State<MiniAppPage> {
   @override
   void initState() {
     super.initState();
+
     controller = WebViewController()
       ..loadRequest(
-        Uri.parse('https://flutter.dev'),
+        Uri.parse(widget.linkUrl),
       );
   }
 

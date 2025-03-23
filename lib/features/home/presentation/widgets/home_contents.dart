@@ -3,11 +3,16 @@ import 'package:app/features/home/presentation/bloc/home_bloc.dart';
 import 'package:app/features/home/presentation/bloc/home_event.dart';
 import 'package:app/features/home/presentation/bloc/home_state.dart';
 import 'package:app/features/home/presentation/widgets/banner.dart';
-import 'package:app/features/services/presentation/widgets/miniapp_card.dart';
+import 'package:app/features/services/presentation/pages/services_page.dart';
+import 'package:app/features/services/presentation/widgets/mini_app_card.dart';
 import 'package:app/features/services/presentation/widgets/workspace_card.dart';
-import 'package:app/features/workspace/presentation/pages/workspace_page.dart';
+import 'package:app/features/workspace/data/models/workspace_model.dart';
+import 'package:app/features/workspace/presentation/bloc/workspace_bloc.dart';
+import 'package:app/features/workspace/presentation/bloc/workspace_event.dart';
+import 'package:app/features/workspace/presentation/bloc/workspace_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 
 class HomeContents extends StatefulWidget {
   const HomeContents({super.key});
@@ -27,9 +32,13 @@ class _HomeContentsState extends State<HomeContents> {
   void initState() {
     super.initState();
     // Fetch announcements when the widget initializes
+    const int siteId = 1;
     context
         .read<AnnouncementBloc>()
         .add(FetchAnnouncementsBySiteIdEvent(siteId));
+    context
+        .read<WorkspaceBloc>()
+        .add(FetchUserWorkspaces(parentSiteId: siteId));
   }
 
   @override
@@ -41,38 +50,6 @@ class _HomeContentsState extends State<HomeContents> {
   @override
   Widget build(BuildContext context) {
     const double height = 420;
-
-    // Expanded the workspaces list to have 4 items
-    final List<Map<String, String>> workspaces = [
-      {
-        'image': 'https://github.com/chayakorn2002.png',
-        'label': 'HAPPENING NOW',
-        'title': 'Kasetsart Sriracha',
-        'subtitle': 'เกษตรศาสตร์ ศรีราชา',
-        'backgroundColor': '0xFF59DFFD',
-      },
-      {
-        'image': 'https://github.com/thyms-c.png',
-        'label': 'UPCOMING EVENT',
-        'title': 'Digital Innovation',
-        'subtitle': 'นวัตกรรมดิจิทัล',
-        'backgroundColor': '0xFF6C5DD3',
-      },
-      {
-        'image': 'https://github.com/chayakorn2002.png',
-        'label': 'STUDENT ACTIVITY',
-        'title': 'Computer Science',
-        'subtitle': 'วิทยาการคอมพิวเตอร์',
-        'backgroundColor': '0xFFFF7F51',
-      },
-      {
-        'image': 'https://github.com/thyms-c.png',
-        'label': 'WORKSHOP',
-        'title': 'Data Science',
-        'subtitle': 'วิทยาศาสตร์ข้อมูล',
-        'backgroundColor': '0xFF59DFFD',
-      },
-    ];
 
     return ListView(
       children: <Widget>[
@@ -156,6 +133,7 @@ class _HomeContentsState extends State<HomeContents> {
                 index: index,
                 title: "name",
                 imageUrl: 'https://github.com/thyms-c.png',
+                linkUrl: "https://www.google.com",
               );
             },
           ),
@@ -172,42 +150,60 @@ class _HomeContentsState extends State<HomeContents> {
           ),
         ),
         const SizedBox(height: 12),
-        SizedBox(
-          height: 252,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: 4,
-            itemBuilder: (context, index) {
-              if (index == 3) {
-                return SeeAllCard(
-                  onTap: () {
-                    print('click see all');
-                  },
-                );
-              }
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const WorkspacePage(),
-                    ),
-                  );
-                },
-                child: WorkspaceCard(
-                  imageUrl: workspaces[index]['image']!,
-                  label: workspaces[index]['label']!,
-                  title: workspaces[index]['title']!,
-                  subtitle: workspaces[index]['subtitle']!,
-                  backgroundColor:
-                      Color(int.parse(workspaces[index]['backgroundColor']!)),
+        BlocBuilder<WorkspaceBloc, WorkspaceState>(
+          builder: (context, state) {
+            if (state is WorkspaceLoaded && state.userWorkspaces.isEmpty) {
+              return const Center(
+                child: Text(
+                  'No workspaces available',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black54,
+                  ),
                 ),
               );
-            },
-          ),
+            }
+
+            return (state is WorkspaceLoaded)
+                ? _buildWorkspaceCard(state, state.userWorkspaces)
+                : const Center(
+                    child: CircularProgressIndicator(),
+                  );
+          },
         ),
         const SizedBox(height: 28),
       ],
+    );
+  }
+
+  Widget _buildWorkspaceCard(
+      WorkspaceState state, List<WorkspaceModel> workspaces) {
+    return SizedBox(
+      height: 240,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: workspaces.length > 3 ? 4 : workspaces.length + 1,
+        itemBuilder: (context, index) {
+          if (index == (workspaces.length > 3 ? 3 : workspaces.length)) {
+            return SeeAllCard(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ServicesPage()),
+                );
+              },
+            );
+          }
+          return WorkspaceCard(
+            imageUrl: workspaces[index].imageUrl,
+            title: workspaces[index].name,
+            subtitle: workspaces[index].shortDescription,
+            parentSiteId: workspaces[index].siteParentId,
+            workspaceId: workspaces[index].siteId,
+            workspaceName: workspaces[index].name,
+          );
+        },
+      ),
     );
   }
 }

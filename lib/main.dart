@@ -10,6 +10,10 @@ import 'package:app/features/home/data/repositories/announcement_repository_impl
 import 'package:app/features/home/presentation/bloc/home_bloc.dart';
 import 'package:app/features/notification/data/repositories/noti_repository_impl.dart';
 import 'package:app/features/notification/presentation/bloc/noti_bloc.dart';
+import 'package:app/features/services/data/repositories/mini_app_repository_impl.dart';
+import 'package:app/features/services/presentation/bloc/mini_app_bloc.dart';
+import 'package:app/features/workspace/data/repositories/workspace_repository_impl.dart';
+import 'package:app/features/workspace/presentation/bloc/workspace_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -58,6 +62,16 @@ class MyApp extends StatelessWidget {
             apiService: apiService,
           ),
         ),
+        RepositoryProvider<MiniAppRepository>(
+          create: (context) => MiniAppRepositoryImpl(
+            apiService: apiService,
+          ),
+        ),
+        RepositoryProvider<WorkspaceRepository>(
+          create: (context) => WorkspaceRepositoryImpl(
+            apiService: apiService,
+          ),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -75,6 +89,14 @@ class MyApp extends StatelessWidget {
             create: (context) => AnnouncementBloc(
               repository: context.read<AnnouncementRepository>(),
             ),
+          ),
+          BlocProvider<MiniAppBloc>(
+            create: (context) =>
+                MiniAppBloc(repository: context.read<MiniAppRepository>()),
+          ),
+          BlocProvider<WorkspaceBloc>(
+            create: (context) =>
+                WorkspaceBloc(repository: context.read<WorkspaceRepository>()),
           ),
         ],
         child: MaterialApp(

@@ -76,7 +76,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   Future<GoogleSignInToken> _authenticateWithBackend(String accessToken) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/authentications/sign/google'),
+      Uri.parse('$baseUrl/authentications/user/sign/google'),
       headers: {
         'Content-Type': 'application/json',
         'App-Secret': appSecret,

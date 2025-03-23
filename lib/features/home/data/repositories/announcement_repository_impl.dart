@@ -16,10 +16,11 @@ class AnnouncementRepositoryImpl implements AnnouncementRepository {
     try {
       final response = await apiService.get('announcements/list/$siteId');
 
-      if (response['data'] != null) {
-        final List<dynamic> announcementsJson = response['data'];
-        return announcementsJson
-            .map((json) => Announcement.fromJson(json))
+      if (response['data'] != null && response['data'] is List) {
+        return (response['data'] as List)
+            .map((item) => Announcement.fromJson(item))
+            .where((announcement) =>
+                announcement.isPin == true) // Keep only pinned
             .toList();
       }
       return [];
