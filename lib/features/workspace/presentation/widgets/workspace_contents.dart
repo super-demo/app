@@ -11,6 +11,7 @@ import 'package:app/features/workspace/presentation/bloc/workspace_event.dart';
 import 'package:app/features/workspace/presentation/bloc/workspace_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class WorkspaceContents extends StatefulWidget {
@@ -55,17 +56,23 @@ class WorkspaceContentsState extends State<WorkspaceContents> {
         const SizedBox(height: 8),
         BlocBuilder<MiniAppBloc, MiniAppState>(builder: (context, state) {
           if (state is MiniAppLoaded && state.siteMiniAppList.isEmpty) {
-            return const Center(
-              child: Text(
-                'No mini apps available',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black54,
+            return Column(
+              children: [
+                Center(
+                  child: Lottie.asset(
+                    'assets/lottie/empty.json',
+                    width: 100,
+                    height: 100,
+                  ),
                 ),
-              ),
+                const SizedBox(height: 10),
+                const Center(
+                    child: Text('No mini apps available.',
+                        style: TextStyle(color: Colors.black54))),
+                const SizedBox(height: 14),
+              ],
             );
           }
-
           return (state is MiniAppLoaded)
               ? _buildMiniAppCard(state, state.siteMiniAppList)
               : const Center(child: CircularProgressIndicator());

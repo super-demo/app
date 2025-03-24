@@ -86,51 +86,54 @@ class _ServicesContentsState extends State<ServicesContents> {
     const int itemsPerPage = 8;
     int totalPages = (miniApps.length / itemsPerPage).ceil();
 
-    return Column(
-      children: [
-        ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: height / 2),
-          child: PageView.builder(
-            controller: _pageController,
-            itemCount: totalPages,
-            itemBuilder: (context, pageIndex) {
-              return GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4, // 4 columns
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                ),
-                itemCount: itemsPerPage,
-                itemBuilder: (context, index) {
-                  int globalIndex = pageIndex * itemsPerPage + index;
-                  if (globalIndex >= miniApps.length) {
-                    return const SizedBox(); // Prevent overflow
-                  }
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+      child: Column(
+        children: [
+          ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: height / 2),
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: totalPages,
+              itemBuilder: (context, pageIndex) {
+                return GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4, // 4 columns
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                  ),
+                  itemCount: itemsPerPage,
+                  itemBuilder: (context, index) {
+                    int globalIndex = pageIndex * itemsPerPage + index;
+                    if (globalIndex >= miniApps.length) {
+                      return const SizedBox(); // Prevent overflow
+                    }
 
-                  return MiniAppCard(
-                    index: miniApps[globalIndex].siteMiniAppId,
-                    title: miniApps[globalIndex].slug,
-                    imageUrl: miniApps[globalIndex].imageUrl,
-                    linkUrl: miniApps[globalIndex].linkUrl,
-                  );
-                },
-              );
-            },
+                    return MiniAppCard(
+                      index: miniApps[globalIndex].siteMiniAppId,
+                      title: miniApps[globalIndex].slug,
+                      imageUrl: miniApps[globalIndex].imageUrl,
+                      linkUrl: miniApps[globalIndex].linkUrl,
+                    );
+                  },
+                );
+              },
+            ),
           ),
-        ),
-        const SizedBox(height: 12),
-        SmoothPageIndicator(
-          controller: _pageController,
-          count: totalPages,
-          effect: const WormEffect(
-            dotHeight: 8,
-            dotWidth: 8,
-            activeDotColor: AppColors.kColorPrimary,
+          const SizedBox(height: 12),
+          SmoothPageIndicator(
+            controller: _pageController,
+            count: totalPages,
+            effect: const WormEffect(
+              dotHeight: 8,
+              dotWidth: 8,
+              activeDotColor: AppColors.kColorPrimary,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

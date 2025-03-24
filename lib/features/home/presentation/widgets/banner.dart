@@ -52,34 +52,34 @@ class HeroLayoutCard extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  bannerInfo.title,
-                  overflow: TextOverflow.clip,
-                  softWrap: false,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineLarge
-                      ?.copyWith(color: Colors.white),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  bannerInfo.subtitle,
-                  overflow: TextOverflow.clip,
-                  softWrap: false,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: Colors.white),
-                ),
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.all(18.0),
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     mainAxisSize: MainAxisSize.min,
+          //     children: <Widget>[
+          //       Text(
+          //         bannerInfo.title,
+          //         overflow: TextOverflow.clip,
+          //         softWrap: false,
+          //         style: Theme.of(context)
+          //             .textTheme
+          //             .headlineLarge
+          //             ?.copyWith(color: Colors.black),
+          //       ),
+          //       const SizedBox(height: 10),
+          //       Text(
+          //         bannerInfo.subtitle,
+          //         overflow: TextOverflow.clip,
+          //         softWrap: false,
+          //         style: Theme.of(context)
+          //             .textTheme
+          //             .bodyMedium
+          //             ?.copyWith(color: Colors.black),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );

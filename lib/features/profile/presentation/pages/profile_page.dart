@@ -92,7 +92,8 @@ class ProfilePage extends StatelessWidget {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                '${userProfile.name.split(' ').first} ${userProfile.name.split(' ').last[0]}. ',
+                                ('${userProfile.name.split(' ').first} ${userProfile.name.split(' ').last[0]}.' ??
+                                    "-"),
                                 style: const TextStyle(
                                   fontSize: 24,
                                   color: Colors.white,

@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:app/core/constants/app_color.dart';
 import 'package:app/features/workspace/presentation/pages/workspace_page.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +74,8 @@ class _WorkspaceCardState extends State<WorkspaceCard> {
         height: 200, // Set height dynamically
         margin: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-          gradient: randomGradient,
+          // gradient: randomGradient,
+          color: Colors.black54,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Stack(
@@ -97,9 +99,10 @@ class _WorkspaceCardState extends State<WorkspaceCard> {
               right: 0,
               child: Container(
                 padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  gradient: randomGradient,
-                  borderRadius: const BorderRadius.only(
+                decoration: const BoxDecoration(
+                  // gradient: randomGradient,
+                  color: AppColors.kColorPrimary,
+                  borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(16.0),
                     bottomRight: Radius.circular(16.0),
                   ),
